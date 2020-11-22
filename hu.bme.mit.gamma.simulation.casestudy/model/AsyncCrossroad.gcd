@@ -1,0 +1,26 @@
+package crossroad
+
+import "Interfaces/Interfaces.gcd"
+import "CascadeTraffic/TrafficAdapter.gcd"
+import "SyncPedestrianCrossing/PedestrianCrossingAdapter.gcd"
+
+async AsyncCrossroad [
+	port policeInterrupt: requires PoliceInterrupt
+	port pedInterrupt : requires  Pedestrian
+	port priorityOutputTraffic : provides LightCommands
+	port secondaryOutputTraffic : provides LightCommands
+	port pedCrossingOutput : provides LightCommands
+	
+]{
+	component traffic :TrafficAdapter
+	component pedCrossing: PedestrianCrossingAdapter
+	
+	bind pedInterrupt -> pedCrossing.ped
+	bind policeInterrupt -> traffic.policeTraffic
+	bind pedCrossingOutput -> pedCrossing.pedOutput
+	bind priorityOutputTraffic -> traffic.priorityOutput
+	bind secondaryOutputTraffic -> traffic.secondaryOutput
+	
+	channel[traffic.policePed] -o)- [pedCrossing.pedPolice]
+	channel[pedCrossing.pedControl] -o)- [traffic.pedestrian] 
+}

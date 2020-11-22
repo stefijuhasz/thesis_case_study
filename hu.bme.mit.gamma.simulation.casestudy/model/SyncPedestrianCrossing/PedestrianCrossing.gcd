@@ -1,0 +1,24 @@
+package syncpedestriancrossing
+
+import "Interfaces/Interfaces.gcd"
+import "PedController/PedController.gcd"
+import "PedestrianLight/PedestrianLightCrtl.gcd"
+
+sync PedestrianCrossing [
+	port ped : requires Pedestrian
+	port pedPolice: requires PoliceInterrupt
+	port pedControl : provides Pedestrian
+	port pedOutput : provides LightCommands
+]{
+	component pedController : PedController
+	component pedLightCtrl: PedestrianLightCrtl
+	
+	bind ped -> pedController.Pedestrian
+	bind pedControl -> pedController.PedControl
+	bind pedPolice -> pedController.PoliceInterrupt
+	bind pedOutput -> pedLightCtrl.LightCommands
+	
+	channel [pedController.PedPolice] -o)- [pedLightCtrl.PoliceInterrupt]
+	channel [pedController.Control] -o)- [pedLightCtrl.Control]
+	
+}

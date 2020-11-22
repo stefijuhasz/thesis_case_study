@@ -1,0 +1,13 @@
+import "Interfaces/Interfaces.gcd"
+import external "PedController.sct"
+
+statechart{
+	statechart : PedController 
+	mappings {
+		map PoliceInterrupt = PoliceInterrupt as required
+		map Pedestrian = Pedestrian as required
+		map Control = Control as provided
+		map PedPolice = PoliceInterrupt as provided
+		map PedControl = Pedestrian as provided
+	}
+}

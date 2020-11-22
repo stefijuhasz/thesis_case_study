@@ -1,0 +1,12 @@
+import "Interfaces/Interfaces.gcd"
+import external "TrafficLightCrtl.sct"
+
+statechart {
+	statechart : TrafficLightCrtl
+	mappings {
+		map PoliceInterrupt = PoliceInterrupt as required
+		map Pedestrian = Pedestrian as required
+		map Control = Control as required
+		map LightCommands = LightCommands as provided
+	}
+}

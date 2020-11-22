@@ -1,0 +1,14 @@
+package async_pedestriancrossing
+
+import "syncpedestriancrossing"
+
+adapter PedestrianCrossingAdapter of component asyncPedestrianCrossing : PedestrianCrossing[
+	
+]{
+	clock c (rate=3000ms)
+	when any / run
+	
+	queue message(priority=1, capacity=2){
+		c, ped.any, pedPolice.any
+	}
+}

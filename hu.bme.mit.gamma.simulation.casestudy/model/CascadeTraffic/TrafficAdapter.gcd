@@ -1,0 +1,13 @@
+package async_traffic
+
+import "cascadetraffic"
+
+adapter TrafficAdapter of component asyncTraffic : Traffic[	
+]{
+	clock c (rate=2000ms)
+	when any / run
+	
+	queue message (priority=1, capacity=2){
+		c, pedestrian.any, policeTraffic.any
+	}
+}

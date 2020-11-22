@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//model/Controller/Controller.sct=UTF-8
+encoding//model/Interfaces/Interfaces.sct=UTF-8
+encoding//model/PedController/PedController.sct=UTF-8
+encoding//model/PedestrianLight/PedestrianLightCrtl.sct=UTF-8
+encoding//model/TrafficLight/TrafficLightCrtl.sct=UTF-8

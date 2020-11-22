@@ -1,0 +1,35 @@
+package cascadetraffic
+
+import "Interfaces/Interfaces.gcd"
+import "Controller/Controller.gcd"
+import "TrafficLight/TrafficLightCrtl.gcd"
+
+cascade Traffic [
+	port policeTraffic : requires PoliceInterrupt
+	port priorityOutput: provides LightCommands
+	port secondaryOutput : provides LightCommands
+	port policePed : provides PoliceInterrupt
+	port pedestrian : requires Pedestrian
+	
+]{
+	component controller: Controller
+	component prior: TrafficLightCrtl
+	component secondary: TrafficLightCrtl
+	
+	execute controller, prior, secondary
+	
+	bind policeTraffic -> controller.PoliceInterrupt
+	bind pedestrian -> controller.Pedestrian
+	bind policePed -> controller.PedPolice
+	bind priorityOutput -> prior.LightCommands
+	bind secondaryOutput -> secondary.LightCommands
+	
+	channel [controller.PriorityControl] -o)- [prior.Control]
+	channel [controller.PriorityPolice] -o)- [prior.PoliceInterrupt]
+	channel [controller.PedPriority] -o)- [prior.Pedestrian]
+	
+	channel [controller.SecondaryControl] -o)- [secondary.Control]
+	channel [controller.SecondaryPolice] -o)- [secondary.PoliceInterrupt]
+	channel [controller.PedSecondary] -o)- [secondary.Pedestrian]
+	
+}
